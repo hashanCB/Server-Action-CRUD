@@ -1,4 +1,4 @@
-import { addTodo, getTodos, DeletedTodo } from "./action";
+import { addTodo, getTodos, DeletedTodo, update } from "./action";
 export default async function Todo() {
   let todos = await getTodos();
 
@@ -35,8 +35,8 @@ export default async function Todo() {
       </form>
       <br />
       <h3>update</h3>
-      <form action={DeletedTodo}>
-        <input type="text" name="uid" placeholder="id" />
+      <form action={update}>
+        <input type="text" name="udi" placeholder="id" />
         <input name="name" type="text" placeholder="name" />
         <input name="email" type="text" placeholder="email" />
         <button type="submit">Deleted todo</button>

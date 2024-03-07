@@ -43,7 +43,7 @@ export async function update(formData) {
   const id = formData.get("udi");
   const name = formData.get("name");
   const email = formData.get("email");
-
+  console.log(id, name, email);
   await fetch(`http://localhost:3002/users/${id}`, {
     headers: { "Content-Type": "application/json" },
     method: "PUT",
