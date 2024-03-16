@@ -1,10 +1,35 @@
-import { addTodo, getTodos, DeletedTodo, update } from "./action";
-export default async function Todo() {
-  let todos = await getTodos();
+"use client";
+import { useEffect, useState } from "react";
+import { addTodo, getTodos, DeletedTodo, update, createsUser } from "./action";
+import { useFormState } from "react-dom";
+
+const initialState = {
+  message: "",
+};
+
+export default function Todo() {
+  const [todos, settodos] = useState([]);
+  const [state, formAction] = useFormState(createsUser, initialState);
+
+  const grtdata = async () => {
+    const todos = await getTodos();
+    settodos(todos);
+  };
+
+  useEffect(() => {
+    grtdata();
+  }, []);
+
+  const adduser = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    addTodo(formData);
+    grtdata();
+  };
 
   return (
     <div>
-      <form action={addTodo}>
+      <form onSubmit={adduser}>
         <div>
           <h3>Add new todo</h3>
           <label>Name</label>
@@ -40,6 +65,15 @@ export default async function Todo() {
         <input name="name" type="text" placeholder="name" />
         <input name="email" type="text" placeholder="email" />
         <button type="submit">Deleted todo</button>
+      </form>
+
+      <p>validetion</p>
+      <form action={formAction}>
+        <label htmlFor="email">Email</label>
+        <input type="text" id="email" name="email" required />
+        {/* ... */}
+        <p>{state?.message}</p>
+        <button>Sign up</button>
       </form>
     </div>
   );

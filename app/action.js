@@ -1,5 +1,31 @@
 "use server";
 import { revalidatePath, revalidateTag } from "next/cache";
+
+import { z } from "zod";
+
+const schema = z.object({
+  emaile: z.string().email({ message: "Invalid email address" }),
+});
+
+export async function createsUser(prevState, formData) {
+  let message = "";
+
+  const validatedFields = schema.safeParse({
+    emaile: formData.get("email"),
+  });
+
+  // Return early if the form data is invalid
+  if (!validatedFields.success) {
+    return {
+      message: "Please enter a valid email",
+    };
+  }
+
+  return {
+    message,
+  };
+}
+
 export async function getTodos() {
   let todos = await fetch("http://localhost:3002/users/", {
     next: { tags: ["todo-items"], revalidate: 3600 },
